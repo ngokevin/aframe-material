@@ -102,7 +102,10 @@
 	    for (var _iterator = this.textEntities[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 	      var text = _step.value;
 	
-	      text.setAttribute('opacity', opacity);
+	      if (!text.components.text) {
+	        continue;
+	      }
+	      text.components.text.material.uniforms.opacity.value = opacity;
 	    }
 	  } catch (err) {
 	    _didIteratorError = true;

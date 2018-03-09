@@ -46,9 +46,11 @@ AFRAME.registerComponent('input', {
     this.el.appendChild(this.cursor);
 
     this.text = document.createElement('a-entity');
+    this.text.setAttribute('mixin', 'font');
     this.el.appendChild(this.text);
 
     this.placeholder = document.createElement('a-entity');
+    this.placeholder.setAttribute('mixin', 'font');
     this.placeholder.setAttribute('visible', false);
     this.el.appendChild(this.placeholder);
 
@@ -236,7 +238,10 @@ AFRAME.registerComponent('input', {
       getTextWidth(that.placeholder, placeholder_props);
     }, 0)
 
-    this.background.setAttribute('color', this.data.backgroundColor)
+    this.background.setAttribute('color', this.data.backgroundColor);
+    setTimeout(() => {
+      this.background.setAttribute('material', {shader: 'flat', color: this.data.backgroundColor});
+    });
     /*if (this.data.backgroundOpacity) {
       setTimeout(function() {
         Utils.updateOpacity(that.background, that.data.backgroundOpacity);
@@ -245,8 +250,8 @@ AFRAME.registerComponent('input', {
     this.background.setAttribute('width', this.data.width);
     //this.background.setAttribute('position', this.data.width/2+' 0 0');
     this.background.setAttribute('position', '0 -0.09 0.001');
-    this.text.setAttribute('position', padding.left-0.001+this.data.width/2+' 0 0.002');
-    this.placeholder.setAttribute('position', padding.left-0.001+this.data.width/2+' 0 0.002');
+    this.text.setAttribute('position', padding.left-0.001+this.data.width/2 +' -0.055 0.002');
+    this.placeholder.setAttribute('position', padding.left-0.001+this.data.width/2 +' -0.055 0.002');
   },
   updateCursor: function() {
     this.cursor.setAttribute('width', this.data.cursorWidth)

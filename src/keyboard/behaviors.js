@@ -101,8 +101,8 @@ Behaviors.addKeyEvents = (el)=>{
   el.addEventListener('click', Behaviors.keyClick);
   el.addEventListener('mousedown', Behaviors.keyDown);
   el.addEventListener('mouseup', Behaviors.keyOut);
-  el.addEventListener('raycaster-intersected', Behaviors.keyIn );
-  el.addEventListener('raycaster-intersected-cleared', Behaviors.keyOut );
+  el.addEventListener('mouseenter', Behaviors.keyIn );
+  el.addEventListener('mouseleave', Behaviors.keyOut );
   //triggerdown
   // https://aframe.io/docs/0.6.0/components/hand-controls.html
 };

@@ -26,6 +26,7 @@ Draw.numericalUI = ()=> {
   el.setAttribute('height', '0.360');
   el.setAttribute('radius', '0.02');
   el.setAttribute('color', Config.KEYBOARD_COLOR);
+  setTimeout(() => { el.setAttribute('material', {color: Config.KEYBOARD_COLOR, shader: 'flat'}); });
   wrapper.appendChild(el);
 
   return wrapper;
@@ -44,6 +45,7 @@ Draw.mainUI = ()=>{
   el.setAttribute('height', '0.360');
   el.setAttribute('radius', '0.02');
   el.setAttribute('color', Config.KEYBOARD_COLOR);
+  setTimeout(() => { el.setAttribute('material', {color: Config.KEYBOARD_COLOR, shader: 'flat'}); });
   wrapper.appendChild(el);
 
   return wrapper;
@@ -63,6 +65,7 @@ Draw.actionsUI = ()=> {
   el.setAttribute('height', '0.360');
   el.setAttribute('radius', '0.02');
   el.setAttribute('color', Config.KEYBOARD_COLOR);
+  setTimeout(() => { el.setAttribute('material', {color: Config.KEYBOARD_COLOR, shader: 'flat'}); });
   wrapper.appendChild(el);
 
   return wrapper;
@@ -225,6 +228,7 @@ Draw.key = (id, type, value)=> {
   el.setAttribute('key-type', type);
   el.setAttribute('key-value', value);
   el.setAttribute('color', Config.KEYBOARD_COLOR);
+  setTimeout(() => { el.setAttribute('material', {color: Config.KEYBOARD_COLOR, shader: 'flat'}); });
 
   // ---------------------------------------------------------------------------
   // EVENTS
@@ -234,21 +238,15 @@ Draw.key = (id, type, value)=> {
   // ---------------------------------------------------------------------------
   // SHADOW
 
-  el.shadow_el = document.createElement('a-image');
-  el.shadow_el.setAttribute('width', Config.KEY_WIDTH*1.25);
-  el.shadow_el.setAttribute('height', Config.KEY_WIDTH*1.25);
-  el.shadow_el.setAttribute('position', Config.KEY_WIDTH/2+' '+Config.KEY_WIDTH/2+' -0.002');
-  el.shadow_el.setAttribute('src', Assets.aframeKeyboardShadow);
-  el.appendChild(el.shadow_el);
-
   // ---------------------------------------------------------------------------
   // TEXT KEY
 
   if (type === 'text' || type === 'spacebar' || type ===  'symbol') {
     var letter_el = document.createElement('a-text');
+    letter_el.setAttribute('mixin', 'font');
     letter_el.setAttribute('value', value);
     letter_el.setAttribute('color', '#dbddde');
-    letter_el.setAttribute('position', Config.KEY_WIDTH/2+' '+Config.KEY_WIDTH/2+' 0.01');
+    letter_el.setAttribute('position', Config.KEY_WIDTH/2+' '+ (Config.KEY_WIDTH/2 - 0.02) +' 0.015');
     letter_el.setAttribute('scale', '0.16 0.16 0.16');
     letter_el.setAttribute('align', 'center');
     letter_el.setAttribute('baseline', 'center');
@@ -261,13 +259,16 @@ Draw.key = (id, type, value)=> {
   if (type === 'spacebar') {
     el.setAttribute('width', Config.SPACE_KEY_WIDTH);
     el.setAttribute('height', Config.SPACE_KEY_HEIGHT);
-    el.setAttribute('color', '#404b50');
-    el.shadow_el.setAttribute('width', Config.SPACE_KEY_WIDTH*1.12);
-    el.shadow_el.setAttribute('height', Config.SPACE_KEY_HEIGHT*1.2);
-    el.shadow_el.setAttribute('position', Config.SPACE_KEY_WIDTH/2+' '+Config.SPACE_KEY_HEIGHT/2+' -0.02');
-    letter_el.setAttribute('color', '#adb1b3');
+    setColor(el, letter_el);
     letter_el.setAttribute('scale', '0.12 0.12 0.12');
-    letter_el.setAttribute('position', Config.SPACE_KEY_WIDTH/2+' '+Config.SPACE_KEY_HEIGHT/2+' 0');
+    letter_el.setAttribute('position', Config.SPACE_KEY_WIDTH/2+' '+Config.SPACE_KEY_HEIGHT/2 +' 0');
+
+    function setColor (keyEl, letterEl) {
+      setTimeout(() => {
+        keyEl.setAttribute('color', Config.KEY_COLOR_ACTIVE);
+        letterEl.setAttribute('color', Config.KEY_COLOR_ACTIVE);
+      }, 500);
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -282,8 +283,6 @@ Draw.key = (id, type, value)=> {
 
   if (type === 'backspace' || type === 'enter' || type === 'dismiss') {
     el.setAttribute('width', Config.ACTION_WIDTH);
-    el.shadow_el.setAttribute('width', Config.ACTION_WIDTH*1.25);
-    el.shadow_el.setAttribute('position', Config.ACTION_WIDTH/2+' '+Config.KEY_WIDTH/2+' -0.02');
   }
 
   // ---------------------------------------------------------------------------
@@ -329,8 +328,6 @@ Draw.key = (id, type, value)=> {
 
   else if (type === 'enter') {
     el.setAttribute('height', Config.ACTION_WIDTH);
-    el.shadow_el.setAttribute('height', Config.ACTION_WIDTH*1.25);
-    el.shadow_el.setAttribute('position', Config.ACTION_WIDTH/2+' '+Config.ACTION_WIDTH/2+' -0.02');
 
     var circle_el = document.createElement('a-circle');
     circle_el.setAttribute('color', '#4285f4');

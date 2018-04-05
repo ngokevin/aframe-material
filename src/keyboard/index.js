@@ -26,7 +26,7 @@ AFRAME.registerComponent('keyboard', {
 
     // Create layout
     this.el.alphabeticalLayout = Draw.alphabeticalLayout();
-    this.el.symbolsLayout = Draw.symbolsLayout();
+    // this.el.symbolsLayout = Draw.symbolsLayout();
 
     // Append layouts to UI
     numericalUI.appendChild( Draw.numericalLayout() );

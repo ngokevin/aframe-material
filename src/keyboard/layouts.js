@@ -47,11 +47,7 @@ const Layouts = {
     { type: 'text', value: '!'},
     { type: 'text', value: '?'},
 
-    { type: 'symbol', value: '#+='},
-    { type: 'text', value: '@'},
     { type: 'spacebar', value: ''},
-    { type: 'text', value: ','},
-    { type: 'text', value: '.'}
   ],
 
   symbols: [

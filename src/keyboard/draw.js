@@ -124,7 +124,7 @@ Draw.alphabeticalLayout = ()=> {
     // Add margin to the spacebar key
     if (data[i].type === 'spacebar') {
       prev_was_space = true;
-      x = x+0.055;
+      x = x+0.205;
       y = Config.KEY_WIDTH*index_y -  0.01;
     }
 
@@ -170,7 +170,7 @@ Draw.symbolsLayout = ()=> {
     // Add margin to the spacebar key
     if (data[i].type === 'spacebar') {
       prev_was_space = true;
-      x = x+0.055;
+      x = x+0.085;
       y = Config.KEY_WIDTH*index_y -  0.01;
     }
 
@@ -261,7 +261,7 @@ Draw.key = (id, type, value)=> {
     el.setAttribute('height', Config.SPACE_KEY_HEIGHT);
     setColor(el, letter_el);
     letter_el.setAttribute('scale', '0.12 0.12 0.12');
-    letter_el.setAttribute('position', Config.SPACE_KEY_WIDTH/2+' '+Config.SPACE_KEY_HEIGHT/2 +' 0');
+    letter_el.setAttribute('position', Config.SPACE_KEY_WIDTH/2 + .03 +' '+Config.SPACE_KEY_HEIGHT/2 +' 0');
 
     function setColor (keyEl, letterEl) {
       setTimeout(() => {

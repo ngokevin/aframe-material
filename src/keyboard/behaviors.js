@@ -11,6 +11,18 @@ Behaviors.el = null;
 // KEYBOARD METHODS
 
 Behaviors.showKeyboard = function(el) {
+  if (el.o_position) {
+    el.object3D.position.copy(el.o_position);
+  }
+  el.isOpen = true;
+  for(let item of el.querySelectorAll('[data-ui]') ) {
+    for (let child of item.children) {
+      child.setAttribute('show', true);
+    }
+  }
+  let parent = el.parentNode;
+  if (parent) { return; }
+  el.sceneEl.appendChild(el);
 };
 
 Behaviors.hideKeyboard = function(el) {
@@ -40,29 +52,22 @@ Behaviors.openKeyboard = function(el) {
   el._transitioning = true;
   let parent = el.parentNode;
   if (!parent) { el.sceneEl.appendChild(el); }
-
-  var items = el.querySelectorAll('[data-ui]');
-  for(var i = 0; i < items.length; i++) {
-    for(var j = 0; j < items[i].children.length; j++) {
-      items[i].children[j].setAttribute('hide', true);
-      items[i].children[j].removeAttribute('hide');
+  for(let item of el.querySelectorAll('[data-ui]') ) {
+    for (let child of item.children) {
+      child.setAttribute('hide', true);
     }
-    fadeIn(el, items[i]);
+    function animationend() {
+      item.children[0].removeEventListener('animationend', animationend)
+      setTimeout(function() {
+        item.children[1].setAttribute('fadein', {duration: 160});
+        Event.emit(Behaviors.el, 'didopen');
+        el._transitioning = false;
+      }, 10)
+    }
+    item.children[0].setAttribute('fadein', {duration: 160});
+    item.children[0].addEventListener('animationend', animationend)
   }
 };
-
-function fadeIn (el, item) {
-  function animationend() {
-    item.children[0].removeEventListener('animationend', animationend)
-    setTimeout(function() {
-      item.children[1].setAttribute('fadein', 'duration', 160);
-      Event.emit(Behaviors.el, 'didopen');
-      el._transitioning = false;
-    }, 10)
-  }
-  item.children[0].setAttribute('fadein', 'duration', 160);
-  item.children[0].addEventListener('animationend', animationend)
-}
 
 Behaviors.dismissKeyboard = function(el) {
   el._transitioning = true;

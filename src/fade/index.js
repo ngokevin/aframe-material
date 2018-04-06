@@ -68,7 +68,9 @@ AFRAME.registerComponent('show', {
   init: function() {
     this.textEntities = this.el.querySelectorAll('a-text');
     this.opacityUpdate(1);
-    this.el.removeAttribute('show');
+    setTimeout(() => {
+      this.el.removeAttribute('show');
+    }, 50);
   },
   opacityUpdate: opacityUpdate
 });
@@ -80,6 +82,9 @@ AFRAME.registerComponent('hide', {
   init: function() {
     this.textEntities = this.el.querySelectorAll('a-text');
     this.opacityUpdate(0);
+    setTimeout(() => {
+      this.el.removeAttribute('hide');
+    }, 50);
   },
   opacityUpdate: opacityUpdate
 });

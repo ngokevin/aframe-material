@@ -180,9 +180,13 @@
 	
 	AFRAME.registerComponent('show', {
 	  init: function init() {
+	    var _this = this;
+	
 	    this.textEntities = this.el.querySelectorAll('a-text');
 	    this.opacityUpdate(1);
-	    this.el.removeAttribute('show');
+	    setTimeout(function () {
+	      _this.el.removeAttribute('show');
+	    }, 50);
 	  },
 	  opacityUpdate: opacityUpdate
 	});
@@ -192,8 +196,13 @@
 	
 	AFRAME.registerComponent('hide', {
 	  init: function init() {
+	    var _this2 = this;
+	
 	    this.textEntities = this.el.querySelectorAll('a-text');
 	    this.opacityUpdate(0);
+	    setTimeout(function () {
+	      _this2.el.removeAttribute('hide');
+	    }, 50);
 	  },
 	  opacityUpdate: opacityUpdate
 	});
@@ -996,7 +1005,64 @@
 	// -----------------------------------------------------------------------------
 	// KEYBOARD METHODS
 	
-	Behaviors.showKeyboard = function (el) {};
+	Behaviors.showKeyboard = function (el) {
+	  if (el.o_position) {
+	    el.object3D.position.copy(el.o_position);
+	  }
+	  el.isOpen = true;
+	  var _iteratorNormalCompletion = true;
+	  var _didIteratorError = false;
+	  var _iteratorError = undefined;
+	
+	  try {
+	    for (var _iterator = el.querySelectorAll('[data-ui]')[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	      var item = _step.value;
+	      var _iteratorNormalCompletion2 = true;
+	      var _didIteratorError2 = false;
+	      var _iteratorError2 = undefined;
+	
+	      try {
+	        for (var _iterator2 = item.children[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	          var child = _step2.value;
+	
+	          child.setAttribute('show', true);
+	        }
+	      } catch (err) {
+	        _didIteratorError2 = true;
+	        _iteratorError2 = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	            _iterator2.return();
+	          }
+	        } finally {
+	          if (_didIteratorError2) {
+	            throw _iteratorError2;
+	          }
+	        }
+	      }
+	    }
+	  } catch (err) {
+	    _didIteratorError = true;
+	    _iteratorError = err;
+	  } finally {
+	    try {
+	      if (!_iteratorNormalCompletion && _iterator.return) {
+	        _iterator.return();
+	      }
+	    } finally {
+	      if (_didIteratorError) {
+	        throw _iteratorError;
+	      }
+	    }
+	  }
+	
+	  var parent = el.parentNode;
+	  if (parent) {
+	    return;
+	  }
+	  el.sceneEl.appendChild(el);
+	};
 	
 	Behaviors.hideKeyboard = function (el) {
 	  var position = el.getAttribute("position");
@@ -1029,60 +1095,99 @@
 	  if (!parent) {
 	    el.sceneEl.appendChild(el);
 	  }
-	
-	  var items = el.querySelectorAll('[data-ui]');
-	  for (var i = 0; i < items.length; i++) {
-	    for (var j = 0; j < items[i].children.length; j++) {
-	      items[i].children[j].setAttribute('hide', true);
-	      items[i].children[j].removeAttribute('hide');
-	    }
-	    fadeIn(el, items[i]);
-	  }
-	};
-	
-	function fadeIn(el, item) {
-	  function animationend() {
-	    item.children[0].removeEventListener('animationend', animationend);
-	    setTimeout(function () {
-	      item.children[1].setAttribute('fadein', 'duration', 160);
-	      Event.emit(Behaviors.el, 'didopen');
-	      el._transitioning = false;
-	    }, 10);
-	  }
-	  item.children[0].setAttribute('fadein', 'duration', 160);
-	  item.children[0].addEventListener('animationend', animationend);
-	}
-	
-	Behaviors.dismissKeyboard = function (el) {
-	  el._transitioning = true;
-	  var _iteratorNormalCompletion = true;
-	  var _didIteratorError = false;
-	  var _iteratorError = undefined;
+	  var _iteratorNormalCompletion3 = true;
+	  var _didIteratorError3 = false;
+	  var _iteratorError3 = undefined;
 	
 	  try {
 	    var _loop = function _loop() {
-	      var item = _step.value;
-	      var _iteratorNormalCompletion2 = true;
-	      var _didIteratorError2 = false;
-	      var _iteratorError2 = undefined;
+	      var item = _step3.value;
+	      var _iteratorNormalCompletion4 = true;
+	      var _didIteratorError4 = false;
+	      var _iteratorError4 = undefined;
 	
 	      try {
-	        for (var _iterator2 = item.children[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-	          var child = _step2.value;
+	        for (var _iterator4 = item.children[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+	          var child = _step4.value;
+	
+	          child.setAttribute('hide', true);
+	        }
+	      } catch (err) {
+	        _didIteratorError4 = true;
+	        _iteratorError4 = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+	            _iterator4.return();
+	          }
+	        } finally {
+	          if (_didIteratorError4) {
+	            throw _iteratorError4;
+	          }
+	        }
+	      }
+	
+	      function animationend() {
+	        item.children[0].removeEventListener('animationend', animationend);
+	        setTimeout(function () {
+	          item.children[1].setAttribute('fadein', { duration: 160 });
+	          Event.emit(Behaviors.el, 'didopen');
+	          el._transitioning = false;
+	        }, 10);
+	      }
+	      item.children[0].setAttribute('fadein', { duration: 160 });
+	      item.children[0].addEventListener('animationend', animationend);
+	    };
+	
+	    for (var _iterator3 = el.querySelectorAll('[data-ui]')[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+	      _loop();
+	    }
+	  } catch (err) {
+	    _didIteratorError3 = true;
+	    _iteratorError3 = err;
+	  } finally {
+	    try {
+	      if (!_iteratorNormalCompletion3 && _iterator3.return) {
+	        _iterator3.return();
+	      }
+	    } finally {
+	      if (_didIteratorError3) {
+	        throw _iteratorError3;
+	      }
+	    }
+	  }
+	};
+	
+	Behaviors.dismissKeyboard = function (el) {
+	  el._transitioning = true;
+	  var _iteratorNormalCompletion5 = true;
+	  var _didIteratorError5 = false;
+	  var _iteratorError5 = undefined;
+	
+	  try {
+	    var _loop2 = function _loop2() {
+	      var item = _step5.value;
+	      var _iteratorNormalCompletion6 = true;
+	      var _didIteratorError6 = false;
+	      var _iteratorError6 = undefined;
+	
+	      try {
+	        for (var _iterator6 = item.children[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+	          var child = _step6.value;
 	
 	          child.setAttribute('show', true);
 	        }
 	      } catch (err) {
-	        _didIteratorError2 = true;
-	        _iteratorError2 = err;
+	        _didIteratorError6 = true;
+	        _iteratorError6 = err;
 	      } finally {
 	        try {
-	          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-	            _iterator2.return();
+	          if (!_iteratorNormalCompletion6 && _iterator6.return) {
+	            _iterator6.return();
 	          }
 	        } finally {
-	          if (_didIteratorError2) {
-	            throw _iteratorError2;
+	          if (_didIteratorError6) {
+	            throw _iteratorError6;
 	          }
 	        }
 	      }
@@ -1105,20 +1210,20 @@
 	      item.children[1].addEventListener('animationend', animationend);
 	    };
 	
-	    for (var _iterator = el.querySelectorAll('[data-ui]')[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	      _loop();
+	    for (var _iterator5 = el.querySelectorAll('[data-ui]')[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+	      _loop2();
 	    }
 	  } catch (err) {
-	    _didIteratorError = true;
-	    _iteratorError = err;
+	    _didIteratorError5 = true;
+	    _iteratorError5 = err;
 	  } finally {
 	    try {
-	      if (!_iteratorNormalCompletion && _iterator.return) {
-	        _iterator.return();
+	      if (!_iteratorNormalCompletion5 && _iterator5.return) {
+	        _iterator5.return();
 	      }
 	    } finally {
-	      if (_didIteratorError) {
-	        throw _iteratorError;
+	      if (_didIteratorError5) {
+	        throw _iteratorError5;
 	      }
 	    }
 	  }
@@ -1230,13 +1335,13 @@
 	    icon_el.setAttribute('src', Assets.aframeKeyboardShift);
 	  }
 	
-	  var _iteratorNormalCompletion3 = true;
-	  var _didIteratorError3 = false;
-	  var _iteratorError3 = undefined;
+	  var _iteratorNormalCompletion7 = true;
+	  var _didIteratorError7 = false;
+	  var _iteratorError7 = undefined;
 	
 	  try {
-	    for (var _iterator3 = document.querySelectorAll("[key-id]")[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-	      var keyEl = _step3.value;
+	    for (var _iterator7 = document.querySelectorAll("[key-id]")[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+	      var keyEl = _step7.value;
 	
 	      var key_id = keyEl.getAttribute('key-id'),
 	          key_type = keyEl.getAttribute('key-type');
@@ -1252,16 +1357,16 @@
 	      }
 	    }
 	  } catch (err) {
-	    _didIteratorError3 = true;
-	    _iteratorError3 = err;
+	    _didIteratorError7 = true;
+	    _iteratorError7 = err;
 	  } finally {
 	    try {
-	      if (!_iteratorNormalCompletion3 && _iterator3.return) {
-	        _iterator3.return();
+	      if (!_iteratorNormalCompletion7 && _iterator7.return) {
+	        _iterator7.return();
 	      }
 	    } finally {
-	      if (_didIteratorError3) {
-	        throw _iteratorError3;
+	      if (_didIteratorError7) {
+	        throw _iteratorError7;
 	      }
 	    }
 	  }

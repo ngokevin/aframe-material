@@ -80,7 +80,6 @@ AFRAME.registerComponent('hide', {
   init: function() {
     this.textEntities = this.el.querySelectorAll('a-text');
     this.opacityUpdate(0);
-    this.el.removeAttribute('hide');
   },
   opacityUpdate: opacityUpdate
 });

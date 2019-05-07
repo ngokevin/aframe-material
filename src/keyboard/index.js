@@ -42,7 +42,7 @@ AFRAME.registerComponent('keyboard', {
     this.el.hide = function() { Behaviors.hideKeyboard(that.el); }
     this.el.open = function() { Behaviors.openKeyboard(that.el); }
     this.el.dismiss = function() { Behaviors.dismissKeyboard(that.el); }
-    this.el.destroy = function() { Behaviors.destroyKeyboard(that.el); }
+    this.el.destroyKeyboard = function() { Behaviors.destroyKeyboard(that.el); }
 
     // Set default value
     this.el.setAttribute("scale", "2 2 2");
